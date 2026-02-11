@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0f;
+  --foreground: #fafafa;
+  --foreground-muted: #94a3b8;
+  --foreground-subtle: #64748b;
+  --card: #111118;
+  --card-hover: #16161f;
+  --border: #1e1e2e;
+  /* Gradient palette - modern violet/cyan/pink */
+  --gradient-1: #8b5cf6;
+  --gradient-2: #06b6d4;
+  --gradient-3: #ec4899;
+  --gradient-4: #6366f1;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
+  --font-body: var(--font-plus-jakarta), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #0a0a0f;
+  color: var(--foreground);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+/* Responsive media - prevent overflow */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Moving gradient background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #0f0a1a 0%,
+    #0a1628 25%,
+    #0d1b2a 40%,
+    #1a0a2e 60%,
+    #0a1225 75%,
+    #0f0a1a 100%
+  );
+  background-size: 400% 400%;
+  animation: bg-gradient-move 20s ease infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Colored gradient layer - moves at different speed for depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(139, 92, 246, 0.18) 0%,
+    transparent 35%,
+    rgba(6, 182, 212, 0.15) 50%,
+    transparent 65%,
+    rgba(236, 72, 153, 0.12) 100%
+  );
+  background-size: 400% 400%;
+  animation: bg-gradient-move 22s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes bg-gradient-move {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-border {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--card), var(--card)) padding-box,
+      linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-1)) border-box;
+    background-size: 300% 300%;
+  }
+  .btn-gradient {
+    background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+    background-size: 200% 200%;
+  }
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.3);
+  color: var(--foreground);
+}

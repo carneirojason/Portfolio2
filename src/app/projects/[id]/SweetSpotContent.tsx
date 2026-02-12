@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { getAssetUrl } from "@/lib/basePath";
 
 const DEFAULT_GRADIENT = "from-emerald-400/30 to-cyan-400/30";
-const IMG = "/images/sweet-spot";
 
 const container = {
   hidden: { opacity: 0 },
@@ -60,10 +59,12 @@ const screenshotNames = [
 
 export function SweetSpotContent() {
   const [videoUrl, setVideoUrl] = useState<string>("");
+  const [imageBasePath, setImageBasePath] = useState<string>("");
 
   useEffect(() => {
-    // Set video URL on client side to ensure correct base path
+    // Set URLs on client side to ensure correct base path
     setVideoUrl(getAssetUrl("images/sweet-spot/marketing.mp4"));
+    setImageBasePath(getAssetUrl("images/sweet-spot"));
   }, []);
 
   return (
@@ -170,24 +171,26 @@ export function SweetSpotContent() {
                   The app uses a freemium model with subscriptions and AI
                   credit purchases.
                 </Paragraph>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4 w-full max-w-2xl mx-auto my-6 sm:my-8 min-w-0">
-                  {screenshotNames.map(({ src, alt }) => (
-                    <motion.div
-                      key={src}
-                      variants={item}
-                      className="flex justify-center"
-                    >
-                      <Image
-                        src={`${IMG}/${src}`}
-                        alt={alt}
-                        width={160}
-                        height={280}
-                        unoptimized
-                        className="rounded-xl border border-white/20 shadow-lg w-full max-w-full sm:max-w-[160px] h-auto object-contain"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                {imageBasePath && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4 w-full max-w-2xl mx-auto my-6 sm:my-8 min-w-0">
+                    {screenshotNames.map(({ src, alt }) => (
+                      <motion.div
+                        key={src}
+                        variants={item}
+                        className="flex justify-center"
+                      >
+                        <Image
+                          src={`${imageBasePath}/${src}`}
+                          alt={alt}
+                          width={160}
+                          height={280}
+                          unoptimized
+                          className="rounded-xl border border-white/20 shadow-lg w-full max-w-full sm:max-w-[160px] h-auto object-contain"
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </Section>
 
               <Section title="Key Features">

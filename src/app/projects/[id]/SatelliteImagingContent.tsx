@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BackButton } from "@/components/BackButton";
+import { useEffect, useState } from "react";
+import { getAssetUrl } from "@/lib/basePath";
 
 const DEFAULT_GRADIENT = "from-amber-400/30 to-orange-400/30";
 
@@ -47,6 +49,15 @@ function Paragraph({ children }: { children: React.ReactNode }) {
 }
 
 export function SatelliteImagingContent() {
+  const [imagePath1, setImagePath1] = useState<string>("");
+  const [imagePath2, setImagePath2] = useState<string>("");
+
+  useEffect(() => {
+    // Set image URLs on client side to ensure correct base path
+    setImagePath1(getAssetUrl("images/Thales/weight_pruning.jpg"));
+    setImagePath2(getAssetUrl("images/Thales/distillation.jpg"));
+  }, []);
+
   return (
     <main className="relative z-10 min-h-screen min-w-0 pt-20 pb-16 px-4 sm:pt-24 sm:pb-20 sm:px-6">
       <div className="max-w-3xl mx-auto flex flex-col items-center min-w-0 w-full">
@@ -151,32 +162,36 @@ export function SatelliteImagingContent() {
                     form.
                   </li>
                 </ul>
-                <motion.div
-                  variants={item}
-                  className="my-6 flex justify-center"
-                >
-                  <Image
-                    src="/images/Thales/weight_pruning.jpg"
-                    alt="Weight pruning: before and after neural network structure"
-                    width={560}
-                    height={320}
-                    unoptimized
-                    className="rounded-xl border border-white/20 w-full max-w-lg object-cover shadow-lg"
-                  />
-                </motion.div>
-                <motion.div
-                  variants={item}
-                  className="my-6 flex justify-center"
-                >
-                  <Image
-                    src="/images/Thales/distillation.jpg"
-                    alt="Knowledge distillation: teacher model transferring knowledge to student model"
-                    width={560}
-                    height={320}
-                    unoptimized
-                    className="rounded-xl border border-white/20 w-full max-w-lg object-cover shadow-lg"
-                  />
-                </motion.div>
+                {imagePath1 && (
+                  <motion.div
+                    variants={item}
+                    className="my-6 flex justify-center"
+                  >
+                    <Image
+                      src={imagePath1}
+                      alt="Weight pruning: before and after neural network structure"
+                      width={560}
+                      height={320}
+                      unoptimized
+                      className="rounded-xl border border-white/20 w-full max-w-lg object-cover shadow-lg"
+                    />
+                  </motion.div>
+                )}
+                {imagePath2 && (
+                  <motion.div
+                    variants={item}
+                    className="my-6 flex justify-center"
+                  >
+                    <Image
+                      src={imagePath2}
+                      alt="Knowledge distillation: teacher model transferring knowledge to student model"
+                      width={560}
+                      height={320}
+                      unoptimized
+                      className="rounded-xl border border-white/20 w-full max-w-lg object-cover shadow-lg"
+                    />
+                  </motion.div>
+                )}
                 <Paragraph>
                   The chosen solution involved a combination of all three
                   methods, achieving a substantial reduction in storage space

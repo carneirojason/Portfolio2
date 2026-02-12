@@ -20,10 +20,15 @@ Your portfolio was deployed to GitHub Pages at `https://carneirojason.github.io/
    - `PriceSignal/DashboardPriceSignal.jpg`
    - `sweet-spot/` additional images and videos
 
-4. **Video paths not including base path** ⚠️ (Fixed Feb 12):
+4. **Video paths not including base path** ⚠️ (Fixed Feb 12 - 16:15):
    - Raw HTML `<video>` tags don't automatically use Next.js's `basePath` configuration
    - Videos were looking for `/images/video.mp4` instead of `/Portfolio2/images/video.mp4`
    - Needed custom utility to add base path to video URLs
+
+5. **Image paths not including base path** ⚠️ (Fixed Feb 12 - 16:30):
+   - Next.js `<Image>` component with `unoptimized: true` doesn't auto-add `basePath`
+   - Images were looking for `/images/photo.jpg` instead of `/Portfolio2/images/photo.jpg`
+   - Applied same base path utility to all Image components
 
 ## What Was Fixed
 
@@ -42,11 +47,17 @@ Created `public/.nojekyll` (empty file) to tell GitHub Pages:
 ### 3. ✅ Updated `.gitignore`
 Added `/images/` to `.gitignore` to prevent accidentally committing the root images folder again.
 
-### 4. ✅ Fixed video paths with base path utility (Feb 12)
+### 4. ✅ Fixed video paths with base path utility (Feb 12 - 16:15)
 Created `src/lib/basePath.ts` utility to handle asset URLs correctly:
 - Detects if running on GitHub Pages and adds `/Portfolio2` prefix
 - Updates video components to use this utility dynamically
 - Videos now load with correct paths on both development and production
+
+### 5. ✅ Fixed image paths with base path utility (Feb 12 - 16:30)
+Applied the same base path utility to all Image components:
+- Sweet Spot project: 6 app screenshot images
+- Satellite Imaging project: 2 technical diagram images (Thales)
+- Images now load with correct `/Portfolio2` prefix on GitHub Pages
 
 ## Verification
 
@@ -122,15 +133,15 @@ Portfolio/
    - GitHub Pages serves from `/Portfolio2/` (base path)
    - Images are accessible at: `https://carneirojason.github.io/Portfolio2/images/...`
 
-## Technical Details: Why Videos Needed Special Handling
+## Technical Details: Why Videos AND Images Needed Special Handling
 
 Next.js's `basePath` configuration automatically handles:
 - `<Link>` components from `next/link`
-- `<Image>` components from `next/image`
 - CSS and JavaScript imports
 
 But it does **NOT** automatically handle:
 - Raw HTML tags like `<video>`, `<audio>`, `<img>`
+- `<Image>` components with `unoptimized: true` (required for static export)
 - Fetch API calls
 - Custom asset references
 
@@ -144,9 +155,15 @@ But it does **NOT** automatically handle:
 ✅ **Fixed**: All images and videos now in correct location (`public/images/`)  
 ✅ **Fixed**: Added `.nojekyll` for proper GitHub Pages serving  
 ✅ **Fixed**: Video paths now include GitHub Pages base path (`/Portfolio2`)  
+✅ **Fixed**: Image paths now include GitHub Pages base path (`/Portfolio2`)  
 ✅ **Fixed**: Updated `.gitignore` to prevent future issues  
 ✅ **Deployed**: All changes pushed and deployment triggered  
 
-Your images and videos should now load correctly on the deployed site! 🎉
+Your **images AND videos** should now load correctly on the deployed site! 🎉
 
 Check the deployment at: **https://carneirojason.github.io/Portfolio2/**
+
+### Pages to test:
+- **Sweet Spot**: https://carneirojason.github.io/Portfolio2/projects/sweet-spot/ (6 images + video)
+- **Satellite Imaging**: https://carneirojason.github.io/Portfolio2/projects/satellite-imaging/ (2 images)
+- **NutriCuisine**: https://carneirojason.github.io/Portfolio2/projects/nutricuisine/ (video)

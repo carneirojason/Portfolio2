@@ -20,6 +20,11 @@ Your portfolio was deployed to GitHub Pages at `https://carneirojason.github.io/
    - `PriceSignal/DashboardPriceSignal.jpg`
    - `sweet-spot/` additional images and videos
 
+4. **Video paths not including base path** ⚠️ (Fixed Feb 12):
+   - Raw HTML `<video>` tags don't automatically use Next.js's `basePath` configuration
+   - Videos were looking for `/images/video.mp4` instead of `/Portfolio2/images/video.mp4`
+   - Needed custom utility to add base path to video URLs
+
 ## What Was Fixed
 
 ### 1. ✅ Moved all images to `public/images/`
@@ -36,6 +41,12 @@ Created `public/.nojekyll` (empty file) to tell GitHub Pages:
 
 ### 3. ✅ Updated `.gitignore`
 Added `/images/` to `.gitignore` to prevent accidentally committing the root images folder again.
+
+### 4. ✅ Fixed video paths with base path utility (Feb 12)
+Created `src/lib/basePath.ts` utility to handle asset URLs correctly:
+- Detects if running on GitHub Pages and adds `/Portfolio2` prefix
+- Updates video components to use this utility dynamically
+- Videos now load with correct paths on both development and production
 
 ## Verification
 
@@ -111,12 +122,30 @@ Portfolio/
    - GitHub Pages serves from `/Portfolio2/` (base path)
    - Images are accessible at: `https://carneirojason.github.io/Portfolio2/images/...`
 
+## Technical Details: Why Videos Needed Special Handling
+
+Next.js's `basePath` configuration automatically handles:
+- `<Link>` components from `next/link`
+- `<Image>` components from `next/image`
+- CSS and JavaScript imports
+
+But it does **NOT** automatically handle:
+- Raw HTML tags like `<video>`, `<audio>`, `<img>`
+- Fetch API calls
+- Custom asset references
+
+**Solution**: Created a utility function that:
+1. Checks if code is running on GitHub Pages (by pathname)
+2. Prepends `/Portfolio2` to asset paths when needed
+3. Uses `useEffect` hook to set video URLs client-side
+
 ## Summary
 
 ✅ **Fixed**: All images and videos now in correct location (`public/images/`)  
 ✅ **Fixed**: Added `.nojekyll` for proper GitHub Pages serving  
+✅ **Fixed**: Video paths now include GitHub Pages base path (`/Portfolio2`)  
 ✅ **Fixed**: Updated `.gitignore` to prevent future issues  
-✅ **Deployed**: Changes pushed and deployment triggered  
+✅ **Deployed**: All changes pushed and deployment triggered  
 
 Your images and videos should now load correctly on the deployed site! 🎉
 

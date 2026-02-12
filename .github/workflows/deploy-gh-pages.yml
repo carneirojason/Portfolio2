@@ -43,6 +43,7 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           BASE_PATH: ${{ steps.base.outputs.base_path }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.base_path }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -2,9 +2,10 @@
 
 import { motion } from "framer-motion";
 import { BackButton } from "@/components/BackButton";
+import { useEffect, useState } from "react";
+import { getAssetUrl } from "@/lib/basePath";
 
 const DEFAULT_GRADIENT = "from-rose-400/30 to-amber-400/30";
-const DEMO_VIDEO_URL = "/images/marmiton/demo_NutriCuisine.mp4";
 
 const container = {
   hidden: { opacity: 0 },
@@ -47,6 +48,13 @@ function Paragraph({ children }: { children: React.ReactNode }) {
 }
 
 export function NutriCuisineContent() {
+  const [videoUrl, setVideoUrl] = useState<string>("");
+
+  useEffect(() => {
+    // Set video URL on client side to ensure correct base path
+    setVideoUrl(getAssetUrl("images/marmiton/demo_NutriCuisine.mp4"));
+  }, []);
+
   return (
     <main className="relative z-10 min-h-screen min-w-0 pt-20 pb-16 px-4 sm:pt-24 sm:pb-20 sm:px-6">
       <div className="max-w-3xl mx-auto flex flex-col items-center min-w-0 w-full">
@@ -208,14 +216,16 @@ export function NutriCuisineContent() {
                 <h3 className="font-display text-lg font-bold text-foreground mb-4">
                   Watch NutriCuisine DEMO
                 </h3>
-                <video
-                  src={DEMO_VIDEO_URL}
-                  controls
-                  className="w-full max-w-lg rounded-xl border border-white/20 shadow-lg bg-black/30"
-                  preload="metadata"
-                >
-                  Your browser does not support the video tag.
-                </video>
+                {videoUrl && (
+                  <video
+                    src={videoUrl}
+                    controls
+                    className="w-full max-w-lg rounded-xl border border-white/20 shadow-lg bg-black/30"
+                    preload="metadata"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </motion.div>
             </div>
           </div>
